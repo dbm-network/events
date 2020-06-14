@@ -33,7 +33,7 @@ mod: function(DBM) {
 
 		const onReady = DBM.Bot.onReady;
 			DBM.Bot.onReady = function(...params) {
-					DBM.Bot.bot.on("guildMemberUpdate", DBM.RigidKek.boostedGuild);
+					DBM.Bot.bot.on("guildMemberUpdate", DBM.RigidKeK.boostedGuild);
 					onReady.apply(this, ...params);
 		}
 	}
