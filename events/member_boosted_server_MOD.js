@@ -15,7 +15,7 @@ mod: function(DBM) {
 			const events = Bot.$evts["Member Boosted Server"];
 			if(!events) return;
 
-			if ((old.premiumSince === null || old.premiumSince === undefined) && (recent.premiumSince !== null || recent.premiumSince !== undefined)) { // :3
+			if (!old.premiumSince && recent.premiumSince) {
 				for (let i = 0; i < events.length; i++) {
 					const event = events[i];
 					const temp = {};
