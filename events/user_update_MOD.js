@@ -17,6 +17,11 @@ mod: function(DBM) {
 			Actions.invokeEvent(event, server, temp);
 		}
 	};
-	DBM.Bot.bot.on('userUpdate', DBM.RigidKeK.callUserUpdate);
+	const onReady = DBM.Bot.onReady;
+	DBM.Bot.onReady = function(...params) {
+		DBM.Bot.bot.on('userUpdate', DBM.RigidKeK.callUserUpdate);
+		onReady.apply(this, ...params);
+	}
+	
 }
 };
