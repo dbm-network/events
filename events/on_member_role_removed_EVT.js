@@ -23,7 +23,7 @@ module.exports = {
                 let difference = oldRoles.filter(role => !newRoles.has(role.id));
 
                 if (event.temp) temp[event.temp] = server.roles.find(role => role.id == difference.firstKey());
-                if (event.temp2) temp[event.temp2] = newMember.user;
+                if (event.temp2) temp[event.temp2] = newMember;
 
                 Actions.invokeEvent(event, server, temp);
             }
