@@ -6,13 +6,12 @@ module.exports = {
 	fields: ["Temp Variable Name (stores new nickname):", "Temp Variable Name (stores member object):"],
 
 	mod: function(DBM) {
-		DBM.Mindlesscargo = DBM.Mindlesscargo || {};
-		DBM.Mindlesscargo.nicknameChanged = async function(oldMember, newMember) {
-			const { Bot, Actions } = DBM;
+		DBM.events = DBM.events || {};
+		const { Bot, Actions } = DBM;
+		DBM.events.nicknameChanged = async function(oldMember, newMember) {
 			const events = Bot.$evts["Member Nickname Changed MOD"];
 			if(!events) return;
 			if (newMember.nickname === oldMember.nickname) return;
-
 			const server = newMember.guild;
 			for (const event of events) {
 				const temp = {};
@@ -23,8 +22,8 @@ module.exports = {
 		};
 
 		const onReady = DBM.Bot.onReady;
-		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("guildMemberUpdate", DBM.Mindlesscargo.nicknameChanged);
+		Bot.onReady = function(...params) {
+			Bot.bot.on("guildMemberUpdate", DBM.events.nicknameChanged);
 			onReady.apply(this, ...params);
 		};
 	}
