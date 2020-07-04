@@ -6,8 +6,8 @@ module.exports = {
 	fields: ["Temp Variable Name (stores invite code):", "Temp Variable Name (stores creator of invite):"],
 
 	mod: function(DBM) {
-		DBM.LeonZ = DBM.LeonZ || {};
-		DBM.LeonZ.inviteCreate = function(invite) {
+		DBM.events = DBM.events || {};
+		DBM.events.inviteCreate = function(invite) {
 			const { Bot, Actions } = DBM;
 			const events = Bot.$evts["Invite Create"];
 			if(!events) return;
@@ -23,7 +23,7 @@ module.exports = {
 
 		const onReady = DBM.Bot.onReady;
 		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("inviteCreate", DBM.LeonZ.inviteCreate);
+			DBM.Bot.bot.on("inviteCreate", DBM.events.inviteCreate);
 			onReady.apply(this, ...params);
 		};
 	}
