@@ -9,7 +9,6 @@ module.exports = {
 			const events = Bot.$evts["User Update"];
 			if (!events) return;
 			for (const event of events) {
-				const event = events[i];
 				const temp = {};
 				if(event.temp) temp[event.temp] = pre;
 				if(event.temp2) temp[event.temp2] = post;
