@@ -3,12 +3,12 @@ module.exports = {
 
 	isEvent: true,
 
-	fields: ["Temp Variable Name (stores role object):", "Temp Variable Name (stores member object):"],
+	fields: ["Temp Variable Name (Stores role object):", "Temp Variable Name (Stores member object):"],
 
 	mod: function(DBM) {
-		DBM.Mindlesscargo = DBM.Mindlesscargo || {};
-		DBM.Mindlesscargo.roleAdded = async function(oldMember, newMember) {
-			const { Bot, Actions } = DBM;
+		DBM.events = DBM.events || {};
+		const { Bot, Actions } = DBM;
+		DBM.events.roleAdded = async function(oldMember, newMember) {
 			const events = Bot.$evts["Member Role Added MOD"];
 			if(!events) return;
 			if (newMember.roles.size < oldMember.roles.size) return;
@@ -31,8 +31,8 @@ module.exports = {
 		};
 
 		const onReady = DBM.Bot.onReady;
-		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("guildMemberUpdate", DBM.Mindlesscargo.roleAdded);
+		Bot.onReady = function(...params) {
+			Bot.bot.on("guildMemberUpdate", DBM.events.roleAdded);
 			onReady.apply(this, ...params);
 		};
 	}
