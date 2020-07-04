@@ -3,8 +3,8 @@ module.exports = {
 	isEvent: true,
 	fields: ["User Who Used Command", "Command Message"],
 	mod: function(DBM) {
-		DBM.RigidKeK = DBM.RigidKeK || {};
-		DBM.RigidKeK.blacklistedUserUse = function(user, message) {
+		DBM.events = DBM.events || {};
+		DBM.events.blacklistedUserUse = function(user, message) {
 			const { Bot, Actions } = DBM;
 			const events = Bot.$evts["On Blacklisted Command"];
 			if (!events) return;
@@ -18,7 +18,7 @@ module.exports = {
 		};
 		const onReady = DBM.Bot.onReady;
 		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("blacklistUserUse", DBM.RigidKeK.blacklistedUserUse);
+			DBM.Bot.bot.on("blacklistUserUse", DBM.events.blacklistedUserUse);
 			onReady.apply(this, ...params);
 		};
 	}
