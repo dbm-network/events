@@ -4,7 +4,7 @@ module.exports = {
 
 	isEvent: true,
 
-	fields: ["Reaction", "Member who Reacted"],
+	fields: ["Reaction (Temp Variable Name):", "Member who Reacted (Temp Variable Name):"],
 
 	mod: function(DBM) {
 		DBM.events = DBM.events || {};
