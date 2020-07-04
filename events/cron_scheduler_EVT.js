@@ -60,7 +60,7 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 		const cron = Mods.require("node-cron");
 		
 		DBM.events = DBM.events || {}
-		Cron_Scheduler = DBM.events.Cron_Scheduler = DBM.events{};
+		let Cron_Scheduler = DBM.events.Cron_Scheduler = {};
 		Cron_Scheduler.Jobs = {};
 
 		Cron_Scheduler.isValidTimeZone = function(tz) {
