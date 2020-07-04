@@ -7,17 +7,16 @@ module.exports = {
 	fields: ["Member", "Guild"],
 
 	mod: function(DBM) {
-		DBM.RigidKeK = DBM.RigidKeK || {};
+		DBM.events = DBM.events || {};
 
-		DBM.RigidKeK.boostedGuild = function(old, recent) {
+		DBM.events.boostedGuild = function(old, recent) {
 			const { Bot, Actions } = DBM;
 
 			const events = Bot.$evts["Member Boosted Server"];
 			if(!events) return;
 
 			if (!old.premiumSince && recent.premiumSince) {
-				for (let i = 0; i < events.length; i++) {
-					const event = events[i];
+				for (const event of events) {
 					const temp = {};
 					if(event.temp) temp[event.temp] = recent;
 					if(event.temp2) temp[event.temp2] = recent.guild;
@@ -33,7 +32,7 @@ module.exports = {
 
 		const onReady = DBM.Bot.onReady;
 		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("guildMemberUpdate", DBM.RigidKeK.boostedGuild);
+			DBM.Bot.bot.on("guildMemberUpdate", DBM.events.boostedGuild);
 			onReady.apply(this, ...params);
 		};
 	}
