@@ -12,8 +12,8 @@ module.exports = {
 			const { Bot, Actions } = DBM;
 			const events = Bot.$evts["Message Reaction Removed MOD"];
 			if(!events) return;
+			const server = reaction.message.guild;
 			for (const event of events) {
-				const server = reaction.message.guild;
 				const temp = {};
 				if(event.temp) temp[event.temp] = reaction;
 				if(event.temp2) temp[event.temp2] = server.members.get(member.id);
