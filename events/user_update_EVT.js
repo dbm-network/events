@@ -1,14 +1,14 @@
 module.exports = {
 	name: "User Update",
 	isEvent: true,
-	fields: ["User Before Update", "User After Update"],
+	fields: ["User Before Update (Temp Variable Name):", "User After Update (Temp Variable Name):"],
 	mod: function(DBM) {
-		DBM.RigidKeK = DBM.RigidKeK || {};
-		DBM.RigidKeK.callUserUpdate = function(pre, post) {
-			const { Bot, Actions } = DBM;
+		DBM.events = DBM.events || {};
+		const { Bot, Actions } = DBM;
+		DBM.events.callUserUpdate = function(pre, post) {
 			const events = Bot.$evts["User Update"];
-			if(!events) return;
-			for(let i = 0; i < events.length; i++) {
+			if (!events) return;
+			for (const event of events) {
 				const event = events[i];
 				const temp = {};
 				if(event.temp) temp[event.temp] = pre;
@@ -18,8 +18,8 @@ module.exports = {
 			}
 		};
 		const onReady = DBM.Bot.onReady;
-		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("userUpdate", DBM.RigidKeK.callUserUpdate);
+		Bot.onReady = function(...params) {
+			Bot.bot.on("userUpdate", DBM.events.callUserUpdate);
 			onReady.apply(this, ...params);
 		};
 
