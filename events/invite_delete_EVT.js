@@ -12,9 +12,8 @@ module.exports = {
 			const events = Bot.$evts["Invite Delete"];
 			if(!events) return;
 			const server = invite.guild;
-			for (let i = 0; i < events.length; i++) {
+			for (const event of events) {
 				const temp = {};
-				const event = events[i];
 				if(event.temp) temp[event.temp] = invite.code;
 				Actions.invokeEvent(event, server, temp);
 			}
