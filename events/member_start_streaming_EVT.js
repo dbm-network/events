@@ -4,7 +4,7 @@ module.exports = {
 
 	isEvent: true,
 
-	fields: ["Temp Variable Name (store voice channel):", "Temp Variable Name (store streaming member object):"],
+	fields: ["Temp Variable Name (Store voice channel):", "Temp Variable Name (Store streaming member object):"],
 
 	mod: function(DBM) {
 		DBM.events = DBM.events || {};
