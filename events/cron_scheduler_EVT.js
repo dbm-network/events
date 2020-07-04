@@ -59,10 +59,10 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 		const Mods = DBM.Actions.getMods();
 		const cron = Mods.require("node-cron");
 
-		DBM.Cron_Scheduler = DBM.Cron_Scheduler || {};
-		DBM.Cron_Scheduler.Jobs = {};
+		Cron_Scheduler = DBM.events.Cron_Scheduler = {};
+		Cron_Scheduler.Jobs = {};
 
-		DBM.Cron_Scheduler.isValidTimeZone = function(tz) {
+		Cron_Scheduler.isValidTimeZone = function(tz) {
 
 			if(!tz) return true;
 
@@ -78,7 +78,7 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 			}
 		};
 
-		DBM.Cron_Scheduler.setupCrons = function() {
+		Cron_Scheduler.setupCrons = function() {
 
 			const events = Bot.$evts[myEvent.name];
 			if(!events) return;
@@ -94,7 +94,7 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 
 					if(!cron.validate(cronString)) return console.log(`[Cron Scheduler] Invalid cron string for '${eventName}': '${cronString}'`);
 
-					if(!DBM.Cron_Scheduler.isValidTimeZone(timeZone)) return console.log(`[Cron Scheduler] Invalid Timezone for '${eventName}': '${timeZone}'`);
+					if(!Cron_Scheduler.isValidTimeZone(timeZone)) return console.log(`[Cron Scheduler] Invalid Timezone for '${eventName}': '${timeZone}'`);
 
 					const job = cron.schedule(cronString, () => {
 						const servers = Bot.bot.guilds.cache.array();
@@ -105,13 +105,13 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 						}
 					}, { timezone: timeZone });
 
-					DBM.Cron_Scheduler.Jobs[eventName] = job;
+					Cron_Scheduler.Jobs[eventName] = job;
 
 					console.log(`[Cron Scheduler] Event '${eventName}' has been Scheduled. Timezone:${timeZone}|Cron:${cronString}`);
 
 					job.start();
 
-					if(Object.keys(DBM.Cron_Scheduler.Jobs)) console.log(`[Cron Scheduler] ${Object.keys(DBM.Cron_Scheduler.Jobs).length} Jobs Scheduled.`);
+					if(Object.keys(Cron_Scheduler.Jobs)) console.log(`[Cron Scheduler] ${Object.keys(Cron_Scheduler.Jobs).length} Jobs Scheduled.`);
 
 				} catch (error) {
 					console.log(`Event error: ${error}`);
@@ -121,7 +121,7 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 
 		const onReady = DBM.Bot.onReady;
 		DBM.Bot.onReady = function(...params) {
-			DBM.Cron_Scheduler.setupCrons();
+			Cron_Scheduler.setupCrons();
 			onReady.apply(this, ...params);
 		};
 	}
