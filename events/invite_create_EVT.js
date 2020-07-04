@@ -12,15 +12,13 @@ module.exports = {
 			const events = Bot.$evts["Invite Create"];
 			if(!events) return;
 			const server = invite.guild;
-			for (let i = 0; i < events.length; i++) {
+			for (const event of events) {
 				const temp = {};
-				const event = events[i];
 				if(event.temp) temp[event.temp] = invite.code;
 				if(event.temp2) temp[event.temp2] = invite.inviter;
 				Actions.invokeEvent(event, server, temp);
 			}
 		};
-
 		const onReady = DBM.Bot.onReady;
 		DBM.Bot.onReady = function(...params) {
 			DBM.Bot.bot.on("inviteCreate", DBM.events.inviteCreate);
