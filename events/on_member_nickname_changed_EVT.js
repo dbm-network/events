@@ -3,7 +3,7 @@ module.exports = {
 
 	isEvent: true,
 
-	fields: ["Temp Variable Name (stores new nickname):", "Temp Variable Name (stores member object):"],
+	fields: ["Temp Variable Name (Stores new nickname):", "Temp Variable Name (Stores member object):"],
 
 	mod: function(DBM) {
 		DBM.events = DBM.events || {};
