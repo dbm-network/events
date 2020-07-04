@@ -6,8 +6,8 @@ module.exports = {
 	fields: ["Temp Variable Name (stores invite code that was deleted):"],
 
 	mod: function(DBM) {
-		DBM.LeonZ = DBM.LeonZ || {};
-		DBM.LeonZ.inviteDelete = function(invite) {
+		DBM.events = DBM.events || {};
+		DBM.events.inviteDelete = function(invite) {
 			const { Bot, Actions } = DBM;
 			const events = Bot.$evts["Invite Delete"];
 			if(!events) return;
@@ -22,7 +22,7 @@ module.exports = {
 
 		const onReady = DBM.Bot.onReady;
 		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("inviteDelete", DBM.LeonZ.inviteDelete);
+			DBM.Bot.bot.on("inviteDelete", DBM.events.inviteDelete);
 			onReady.apply(this, ...params);
 		};
 	}
