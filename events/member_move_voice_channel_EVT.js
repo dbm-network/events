@@ -1,44 +1,34 @@
 module.exports = {
-	author: "Almeida",
+  author: 'Almeida',
 
-	name: "Member Move Voice Channel",
+  name: 'Member Move Voice Channel',
 
-	isEvent: true,
+  isEvent: true,
 
-	fields: [
-		"Temp Variable Name (stores member that entered the channel):",
-		"Temp Variable Name (stores channel that the member joined):",
-	],
+  fields: ['Temp Variable Name (Stores member that entered the channel):', 'Temp Variable Name (Stores channel that the member joined):'],
 
-	mod(DBM) {
-		DBM.events = DBM.events || {};
-		const { Actions, Bot } = DBM;
-		DBM.events.MemberMoveVoiceChannel = function(oldVoiceState, newVoiceState) {
-			const events = Bot.$evts["Member Move Voice Channel"];
-			if (!events) return;
+  mod (DBM) {
+    DBM.events = DBM.events || {}
+    const { Actions, Bot } = DBM
+    DBM.events.MemberMoveVoiceChannel = function (oldVoiceState, newVoiceState) {
+      const oldChannel = oldVoiceState.channel
+      const newChannel = newVoiceState.channel
+      const server = (oldChannel || newChannel).guild
+      if (!(!(oldChannel && !newChannel) && !(!oldChannel && newChannel) && oldChannel !== newChannel)) return
+      Bot.$evts['Member Move Voice Channel'].forEach((event) => {
+        const temp = {}
 
-			for (const event of events) {
-				const temp = {};
+        if (event.temp) temp[event.temp] = newVoiceState.member
+        if (event.temp2) temp[event.temp2] = newChannel
 
-				const oldChannel = oldVoiceState.channel;
-				const newChannel = newVoiceState.channel;
-				const server = (oldChannel || newChannel).guild;
+        Actions.invokeEvent(event, server, temp)
+      })
+    }
 
-				if (event.temp) temp[event.temp] = newVoiceState.member;
-				if (event.temp2) temp[event.temp2] = newChannel;
-
-				if (!(oldChannel && !newChannel) && !(!oldChannel && newChannel) && oldChannel != newChannel) {
-					Actions.invokeEvent(event, server, temp);
-				} else {
-					return;
-				}
-			}
-		};
-
-		const onReady = Bot.onReady;
-		Bot.onReady = function(...params) {
-			Bot.bot.on("voiceStateUpdate", DBM.events.MemberMoveVoiceChannel);
-			onReady.apply(this, ...params);
-		};
-	},
-};
+    const onReady = Bot.onReady
+    Bot.onReady = function (...params) {
+      Bot.bot.on('voiceStateUpdate', DBM.events.MemberMoveVoiceChannel)
+      onReady.apply(this, ...params)
+    }
+  }
+}
