@@ -22,7 +22,6 @@ module.exports = {
     }
 
     const onReady = Bot.onReady
-
     Bot.onReady = function (...params) {
       Bot.bot.on('blacklistUserUse', DBM.events.blacklistedUserUse)
 
