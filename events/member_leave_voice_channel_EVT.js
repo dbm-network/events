@@ -1,38 +1,39 @@
 module.exports = {
-	author: "Almeida",
 
-	name: "Member Leave Voice Channel",
+  author: 'Almeida',
 
-	isEvent: true,
+  name: 'Member Leave Voice Channel',
 
-	fields: ["Temp Variable Name (stores member that entered the channel):", "Temp Variable Name (stores channel that the member left):"],
+  isEvent: true,
 
-	mod(DBM) {
-		DBM.events = DBM.events || {};
-		const { Actions, Bot } = DBM;
+  fields: ['Temp Variable Name (stores member that entered the channel):', 'Temp Variable Name (stores channel that the member left):'],
 
-		DBM.events.MemberLeaveVoiceChannel = function(oldVoiceState, newVoiceState) {
-			const events = Bot.$evts["Member Leave Voice Channel"];
-			if (!events) return;
+  mod (DBM) {
+    DBM.events = DBM.events || {}
 
-			for (const event of events) {
-				const temp = {};
+    const { Actions, Bot } = DBM
 
-				const oldChannel = oldVoiceState.channel;
-				const newChannel = newVoiceState.channel;
-				const server = (oldChannel || newChannel).guild;
+    DBM.events.MemberLeaveVoiceChannel = function (oldVoiceState, newVoiceState) {
+      const oldChannel = oldVoiceState.channel
+      const newChannel = newVoiceState.channel
+      const server = (oldChannel || newChannel).guild
+      Bot.$evts['Member Leave Voice Channel'].forEach((event) => {
+        const temp = {}
 
-				if (event.temp) temp[event.temp] = oldVoiceState.member;
-				if (event.temp2) temp[event.temp2] = oldChannel;
+        if (event.temp) temp[event.temp] = oldVoiceState.member
+        if (event.temp2) temp[event.temp2] = oldChannel
 
-				if (oldChannel && !newChannel) Actions.invokeEvent(event, server, temp);
-			}
-		};
+        if (oldChannel && !newChannel) Actions.invokeEvent(event, server, temp)
+      })
+    }
 
-		const onReady = DBM.Bot.onReady;
-		Bot.onReady = function(...params) {
-			Bot.bot.on("voiceStateUpdate", DBM.events.MemberLeaveVoiceChannel);
-			onReady.apply(this, ...params);
-		};
-	},
-};
+    const onReady = DBM.Bot.onReady
+
+    Bot.onReady = function (...params) {
+      Bot.bot.on('voiceStateUpdate', DBM.events.MemberLeaveVoiceChannel)
+
+      onReady.apply(this, ...params)
+    }
+  }
+
+}
