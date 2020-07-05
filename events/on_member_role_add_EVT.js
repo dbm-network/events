@@ -1,39 +1,41 @@
 module.exports = {
-	name: "Member Role Added MOD",
 
-	isEvent: true,
+  name: 'Member Role Added MOD',
 
-	fields: ["Temp Variable Name (Stores role object):", "Temp Variable Name (Stores member object):"],
+  isEvent: true,
 
-	mod: function(DBM) {
-		DBM.events = DBM.events || {};
-		const { Bot, Actions } = DBM;
-		DBM.events.roleAdded = async function(oldMember, newMember) {
-			const events = Bot.$evts["Member Role Added MOD"];
-			if(!events) return;
-			if (newMember.roles.size < oldMember.roles.size) return;
+  fields: ['Temp Variable Name (Stores role object):', 'Temp Variable Name (Stores member object):'],
 
-			for (const event of events) {
-				const temp = {};
-				const server = newMember.guild;
-				const oldRoles = oldMember.roles;
-				const newRoles = newMember.roles;
+  mod: function (DBM) {
+    DBM.events = DBM.events || {}
 
-				let difference = newRoles.filter((role) => !oldRoles.has(role.id)).first();
+    const { Bot, Actions } = DBM
 
-				if (event.temp) temp[event.temp] = difference;
-				if (event.temp2) temp[event.temp2] = newMember;
+    DBM.events.roleAdded = async function (oldMember, newMember) {
+      if (newMember.roles.size < oldMember.roles.size) return
+      const server = newMember.guild
 
-				Actions.invokeEvent(event, server, temp);
-			}
+      const oldRoles = oldMember.roles
+      const newRoles = newMember.roles
+      const difference = newRoles.filter((role) => !oldRoles.has(role.id)).first()
 
+      Bot.$evts['Member Role Added MOD'].forEach((event) => {
+        const temp = {}
 
-		};
+        if (event.temp) temp[event.temp] = difference
+        if (event.temp2) temp[event.temp2] = newMember
 
-		const onReady = DBM.Bot.onReady;
-		Bot.onReady = function(...params) {
-			Bot.bot.on("guildMemberUpdate", DBM.events.roleAdded);
-			onReady.apply(this, ...params);
-		};
-	}
-};
+        Actions.invokeEvent(event, server, temp)
+      })
+    }
+
+    const onReady = Bot.onReady
+
+    Bot.onReady = function (...params) {
+      Bot.bot.on('guildMemberUpdate', DBM.events.roleAdded)
+
+      onReady.apply(this, ...params)
+    }
+  }
+
+}
