@@ -8,19 +8,19 @@ module.exports = {
 
   mod: function (DBM) {
     DBM.events = DBM.events || {}
+    const { Bot, Actions } = DBM
     DBM.events.messageDeleteBulk = function (messagesList) {
-      const { Bot, Actions } = DBM
       const server = messagesList.first().guild
-      Bot.$evts['Delete Bulk Messages'].forEach((event) => {
+      for (const event of Bot.$evts['Delete Bulk Messages']) {
         const temp = {}
         if (event.temp) temp[event.temp] = messagesList.array()
         if (event.temp2) temp[event.temp2] = messagesList.size
         Actions.invokeEvent(event, server, temp)
-      })
+      }
     }
-    const onReady = DBM.Bot.onReady
-    DBM.Bot.onReady = function (...params) {
-      DBM.Bot.bot.on('messageDeleteBulk', DBM.events.messageDeleteBulk)
+    const onReady = Bot.onReady
+    Bot.onReady = function (...params) {
+      Bot.bot.on('messageDeleteBulk', DBM.events.messageDeleteBulk)
       onReady.apply(this, ...params)
     }
   }

@@ -1,39 +1,31 @@
 module.exports = {
 
-	name: "Member Boosted Server",
+  name: 'Member Boosted Server',
 
-	isEvent: true,
+  isEvent: true,
 
-	fields: ["Member", "Guild"],
+  fields: ['Member (Temp Variable Name):'],
 
-	mod: function(DBM) {
-		DBM.events = DBM.events || {};
+  mod: function (DBM) {
+    DBM.events = DBM.events || {}
+    const { Bot, Actions } = DBM
+    DBM.events.boostedGuild = function (old, recent) {
+      const server = recent.guild
+      if (!(!old.premiumSince && recent.premiumSince)) return
+      for (const event of Bot.$evts['Member Boosted Server']) {
+        const temp = {}
 
-		DBM.events.boostedGuild = function(old, recent) {
-			const { Bot, Actions } = DBM;
+        if (event.temp) temp[event.temp] = recent
+        if (event.temp2) temp[event.temp2] = recent.guild
 
-			const events = Bot.$evts["Member Boosted Server"];
-			if(!events) return;
+        Actions.invokeEvent(event, server, temp)
+      }
+    }
 
-			if (!old.premiumSince && recent.premiumSince) {
-				for (const event of events) {
-					const temp = {};
-					if(event.temp) temp[event.temp] = recent;
-					if(event.temp2) temp[event.temp2] = recent.guild;
-
-					const server = null;
-
-					Actions.invokeEvent(event, server, temp);
-				}
-			}
-
-
-		};
-
-		const onReady = DBM.Bot.onReady;
-		DBM.Bot.onReady = function(...params) {
-			DBM.Bot.bot.on("guildMemberUpdate", DBM.events.boostedGuild);
-			onReady.apply(this, ...params);
-		};
-	}
-};
+    const onReady = Bot.onReady
+    Bot.onReady = function (...params) {
+      Bot.bot.on('guildMemberUpdate', DBM.events.boostedGuild)
+      onReady.apply(this, ...params)
+    }
+  }
+}

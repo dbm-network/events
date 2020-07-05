@@ -15,19 +15,19 @@ module.exports = {
       const difference = oldRoles.filter((role) => !newRoles.has(role.id)).first()
       if (newMember.roles.size > oldMember.roles.size) return
       const server = newMember.guild
-      Bot.$evts['Member Role Removed MOD'].forEach((event) => {
+      for (const event of Bot.$evts['Member Role Removed MOD']) {
         const temp = {}
 
         if (event.temp) temp[event.temp] = difference
         if (event.temp2) temp[event.temp2] = newMember
 
         Actions.invokeEvent(event, server, temp)
-      })
+      }
     }
 
-    const onReady = DBM.Bot.onReady
-    DBM.Bot.onReady = function (...params) {
-      DBM.Bot.bot.on('guildMemberUpdate', DBM.events.roleRemoved)
+    const onReady = Bot.onReady
+    Bot.onReady = function (...params) {
+      Bot.bot.on('guildMemberUpdate', DBM.events.roleRemoved)
       onReady.apply(this, ...params)
     }
   }

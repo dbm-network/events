@@ -7,19 +7,19 @@ module.exports = {
 
   mod: function (DBM) {
     DBM.events = DBM.events || {}
+    const { Bot, Actions } = DBM
     DBM.events.inviteCreate = function (invite) {
-      const { Bot, Actions } = DBM
       const server = invite.guild
-      Bot.$evts['Invite Create'].forEach((event) => {
+      for (const event of Bot.$evts['Invite Create']) {
         const temp = {}
         if (event.temp) temp[event.temp] = invite.code
         if (event.temp2) temp[event.temp2] = invite.inviter
         Actions.invokeEvent(event, server, temp)
-      })
+      }
     }
-    const onReady = DBM.Bot.onReady
-    DBM.Bot.onReady = function (...params) {
-      DBM.Bot.bot.on('inviteCreate', DBM.events.inviteCreate)
+    const onReady = Bot.onReady
+    Bot.onReady = function (...params) {
+      Bot.bot.on('inviteCreate', DBM.events.inviteCreate)
       onReady.apply(this, ...params)
     }
   }

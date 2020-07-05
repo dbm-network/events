@@ -19,18 +19,17 @@ module.exports = {
       const newRoles = newMember.roles
       const difference = newRoles.filter((role) => !oldRoles.has(role.id)).first()
 
-      Bot.$evts['Member Role Added MOD'].forEach((event) => {
+      for (const event of Bot.$evts['Member Role Added MOD']) {
         const temp = {}
 
         if (event.temp) temp[event.temp] = difference
         if (event.temp2) temp[event.temp2] = newMember
 
         Actions.invokeEvent(event, server, temp)
-      })
+      }
     }
 
     const onReady = Bot.onReady
-
     Bot.onReady = function (...params) {
       Bot.bot.on('guildMemberUpdate', DBM.events.roleAdded)
 

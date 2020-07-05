@@ -11,12 +11,14 @@ module.exports = {
     const { Bot, Actions } = DBM
     DBM.events.reactionRemoved = function (reaction, member) {
       const server = reaction.message.guild
-      Bot.$evts['Message Reaction Removed MOD'].forEach((event) => {
+      for (const event of Bot.$evts['Message Reaction Removed MOD']) {
         const temp = {}
+
         if (event.temp) temp[event.temp] = reaction
-        if (event.temp2) temp[event.temp2] = server.members.get(member.id)
+        if (event.temp2) temp[event.temp2] = server.members.cache.get(member.id)
+
         Actions.invokeEvent(event, server, temp)
-      })
+      }
     }
     const onReady = DBM.Bot.onReady
     Bot.onReady = function (...params) {

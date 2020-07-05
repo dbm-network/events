@@ -10,25 +10,25 @@ module.exports = {
 
   mod (DBM) {
     DBM.events = DBM.events || {}
-
     const { Actions, Bot } = DBM
 
     DBM.events.MemberJoinVoiceChannel = function (oldVoiceState, newVoiceState) {
       const oldChannel = oldVoiceState.channel
       const newChannel = newVoiceState.channel
       const server = (oldChannel || newChannel).guild
-      Bot.$evts['Member Join Voice Channel'].forEach((event) => {
+      if (!(!oldChannel && newChannel)) return
+      for (const event of Bot.$evts['Member Join Voice Channel']) {
         const temp = {}
+
         if (event.temp) temp[event.temp] = newVoiceState.member
         if (event.temp2) temp[event.temp2] = newChannel
-        if (!oldChannel && newChannel) Actions.invokeEvent(event, server, temp)
-      })
-    }
 
-    const onReady = DBM.Bot.onReady
+        Actions.invokeEvent(event, server, temp)
+      }
+    }
+    const onReady = Bot.onReady
     Bot.onReady = function (...params) {
       Bot.bot.on('voiceStateUpdate', DBM.events.MemberJoinVoiceChannel)
-
       onReady.apply(this, ...params)
     }
   }
