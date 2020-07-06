@@ -7,11 +7,11 @@ module.exports = {
   fields: ['Temp Variable Name (Stores role object):', 'Temp Variable Name (Stores member object):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
 
     const { Bot, Actions } = DBM
 
-    DBM.events.roleAdded = async function (oldMember, newMember) {
+    DBM.Events.roleAdded = async function (oldMember, newMember) {
       if (newMember.roles.size < oldMember.roles.size) return
       const server = newMember.guild
 
@@ -31,7 +31,7 @@ module.exports = {
 
     const onReady = Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('guildMemberUpdate', DBM.events.roleAdded)
+      Bot.bot.on('guildMemberUpdate', DBM.Events.roleAdded)
 
       onReady.apply(this, ...params)
     }

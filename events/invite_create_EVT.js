@@ -6,9 +6,9 @@ module.exports = {
   fields: ['Temp Variable Name (stores invite code):', 'Temp Variable Name (stores creator of invite):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Bot, Actions } = DBM
-    DBM.events.inviteCreate = function (invite) {
+    DBM.Events.inviteCreate = function (invite) {
       const server = invite.guild
       for (const event of Bot.$evts['Invite Create']) {
         const temp = {}
@@ -19,7 +19,7 @@ module.exports = {
     }
     const onReady = Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('inviteCreate', DBM.events.inviteCreate)
+      Bot.bot.on('inviteCreate', DBM.Events.inviteCreate)
       onReady.apply(this, ...params)
     }
   }

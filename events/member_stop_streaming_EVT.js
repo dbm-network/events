@@ -7,9 +7,9 @@ module.exports = {
   fields: ['Temp Variable Name (Store voice channel):', 'Temp Variable Name (Store streaming member object):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Bot, Actions } = DBM
-    DBM.events.offStream = function (oldVoiceState, newVoiceState) {
+    DBM.Events.offStream = function (oldVoiceState, newVoiceState) {
       const oldChannel = oldVoiceState.channel
       const newChannel = newVoiceState.channel
       if ((!oldChannel || !oldVoiceState.streaming) || (newChannel && newVoiceState.streaming)) return
@@ -24,7 +24,7 @@ module.exports = {
 
     const onReady = Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('voiceStateUpdate', DBM.events.offStream)
+      Bot.bot.on('voiceStateUpdate', DBM.Events.offStream)
       onReady.apply(this, ...params)
     }
   }

@@ -7,10 +7,10 @@ module.exports = {
   fields: ['User Before Update (Temp Variable Name):', 'User After Update (Temp Variable Name):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Bot, Actions } = DBM
 
-    DBM.events.callUserUpdate = function (pre, post) {
+    DBM.Events.callUserUpdate = function (pre, post) {
       for (const event of Bot.$evts['User Update']) {
         const temp = {}
 
@@ -23,7 +23,7 @@ module.exports = {
 
     const onReady = Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('userUpdate', DBM.events.callUserUpdate)
+      Bot.bot.on('userUpdate', DBM.Events.callUserUpdate)
       onReady.apply(this, ...params)
     }
   }

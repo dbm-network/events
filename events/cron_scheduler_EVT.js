@@ -37,9 +37,9 @@ Timezone (<a href='#' onclick="require('child_process').execSync('start https://
 
     const cron = Mods.require('node-cron')
 
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
 
-    const cronScheduler = DBM.events.Cron_Scheduler = {}
+    const cronScheduler = DBM.Events.Cron_Scheduler = {}
 
     cronScheduler.Jobs = {}
 

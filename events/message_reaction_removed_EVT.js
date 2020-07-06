@@ -7,9 +7,9 @@ module.exports = {
   fields: ['Reaction (Temp Variable Name):', 'Member who Reacted (Temp Variable Name):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Bot, Actions } = DBM
-    DBM.events.reactionRemoved = function (reaction, member) {
+    DBM.Events.reactionRemoved = function (reaction, member) {
       const server = reaction.message.guild
       for (const event of Bot.$evts['Message Reaction Removed MOD']) {
         const temp = {}
@@ -22,7 +22,7 @@ module.exports = {
     }
     const onReady = DBM.Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('messageReactionRemove', DBM.events.reactionRemoved)
+      Bot.bot.on('messageReactionRemove', DBM.Events.reactionRemoved)
       onReady.apply(this, ...params)
     }
   }

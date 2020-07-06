@@ -7,9 +7,9 @@ module.exports = {
   fields: ['User Who Used Command', 'Command Message'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Bot, Actions } = DBM
-    DBM.events.blacklistedUserUse = function (user, message) {
+    DBM.Events.blacklistedUserUse = function (user, message) {
       const server = user.guild || null
       for (const event of Bot.$evts['On Blacklisted Command']) {
         const temp = {}
@@ -24,7 +24,7 @@ module.exports = {
     const onReady = Bot.onReady
 
     Bot.onReady = function (...params) {
-      Bot.bot.on('blacklistUserUse', DBM.events.blacklistedUserUse)
+      Bot.bot.on('blacklistUserUse', DBM.Events.blacklistedUserUse)
 
       onReady.apply(this, ...params)
     }

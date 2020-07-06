@@ -9,10 +9,10 @@ module.exports = {
   fields: ['Temp Variable Name (Stores member that entered the channel):', 'Temp Variable Name (Stores channel that the member joined):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Actions, Bot } = DBM
 
-    DBM.events.MemberMoveVoiceChannel = function (oldVoiceState, newVoiceState) {
+    DBM.Events.MemberMoveVoiceChannel = function (oldVoiceState, newVoiceState) {
       const oldChannel = oldVoiceState.channel
       const newChannel = newVoiceState.channel
       const server = (oldChannel || newChannel).guild
@@ -29,7 +29,7 @@ module.exports = {
 
     const onReady = Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('voiceStateUpdate', DBM.events.MemberMoveVoiceChannel)
+      Bot.bot.on('voiceStateUpdate', DBM.Events.MemberMoveVoiceChannel)
       onReady.apply(this, ...params)
     }
   }

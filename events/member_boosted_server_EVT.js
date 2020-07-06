@@ -7,9 +7,9 @@ module.exports = {
   fields: ['Member (Temp Variable Name):'],
 
   mod: function (DBM) {
-    DBM.events = DBM.events || {}
+    DBM.Events = DBM.Events || {}
     const { Bot, Actions } = DBM
-    DBM.events.boostedGuild = function (old, recent) {
+    DBM.Events.boostedGuild = function (old, recent) {
       const server = recent.guild
       if (!(!old.premiumSince && recent.premiumSince)) return
       for (const event of Bot.$evts['Member Boosted Server']) {
@@ -24,7 +24,7 @@ module.exports = {
 
     const onReady = Bot.onReady
     Bot.onReady = function (...params) {
-      Bot.bot.on('guildMemberUpdate', DBM.events.boostedGuild)
+      Bot.bot.on('guildMemberUpdate', DBM.Events.boostedGuild)
       onReady.apply(this, ...params)
     }
   }
