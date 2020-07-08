@@ -18,7 +18,7 @@ module.exports = {
       const oldRoles = oldMember.roles.cache
       const newRoles = newMember.roles.cache
       const difference = newRoles.filter((role) => !oldRoles.has(role.id)).first()
-
+      if (!Bot.$evts['Member Role Added MOD']) return;
       for (const event of Bot.$evts['Member Role Added MOD']) {
         const temp = {}
 
