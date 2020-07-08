@@ -15,6 +15,7 @@ module.exports = {
 
       const difference = oldRoles.filter((role) => !newRoles.has(role.id)).first()
       const server = newMember.guild
+      if (!Bot.$evts['Member Role Removed MOD']) return
       for (const event of Bot.$evts['Member Role Removed MOD']) {
         const temp = {}
 
