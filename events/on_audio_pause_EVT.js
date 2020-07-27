@@ -6,7 +6,7 @@ module.exports = {
   fields: ['Temp Variable Name (stores voice channel object)'],
 
   mod: function (DBM) {
-    DBM.Events.onPause = function (guild, voiceChannel) {
+    DBM.Events.onAudioPause = function (guild, voiceChannel) {
       const { Bot, Actions } = DBM
       const events = Bot.$evts['On Audio Pause']
       if (!events) return

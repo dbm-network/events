@@ -18,26 +18,26 @@ module.exports = {
         dispatcher.pause = function () {
           if (!dispatcher.pausedSince) {
             pause.bind(this)(...arguments)
-            DBM.Events.onPause(guild, voiceChannel)
+            DBM.Events.onAudioPause(guild, voiceChannel)
           }
         }
         const resume = dispatcher.resume
         dispatcher.resume = function () {
           if (dispatcher.pausedSince) {
             resume.bind(this)(...arguments)
-            DBM.Events.onResume(guild, voiceChannel)
+            DBM.Events.onAudioResume(guild, voiceChannel)
           }
         }
         dispatcher.on('volumeChange', function (oldVolume, newVolme) {
           DBM.Events.onVolumeChange(guild, voiceChannel, oldVolume)
         })
-        DBM.Events.onStart(guild, voiceChannel)
+        DBM.Events.onAudioStart(guild, voiceChannel)
         dispatcher.on('finish', function () {
-          DBM.Events.onEnd(guild, voiceChannel)
+          DBM.Events.onAudioEnd(guild, voiceChannel)
         })
       }
     }
-    DBM.Events.onStart = function (server, voiceChannel) {
+    DBM.Events.onAudioStart = function (server, voiceChannel) {
       const { Bot, Actions } = DBM
       const events = Bot.$evts['On Audio Start']
       if (!events) return
